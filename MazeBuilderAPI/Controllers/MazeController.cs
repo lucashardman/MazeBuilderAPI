@@ -5,9 +5,8 @@ using MazeBuilderAPI.Algorithms.Maze;
 
 namespace MazeBuilderAPI.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class MazeController : ControllerBase
+
+public class MazeController : MazeBuilderBaseController
 {
     [HttpGet]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
@@ -18,13 +17,27 @@ public class MazeController : ControllerBase
         {
             case MazeAlgorithm.HuntAndKill:
             {
-                HuntAndKillAlgorithm.Run(height, width, seed);
+                var maze = new HuntAndKillAlgorithm();
+                maze.Run(height, width, seed);
+                maze.ConvertMazeToResponseType();
                 break;
             }
-            default:
-            {
+            case MazeAlgorithm.RecursiveDivision:
                 break;
-            }
+            case MazeAlgorithm.RandomizedPrim:
+                break;
+            case MazeAlgorithm.Eller:
+                break;
+            case MazeAlgorithm.BinaryTree:
+                break;
+            case MazeAlgorithm.RandomizedKruskal:
+                break;
+            case MazeAlgorithm.Sidewinder:
+                break;
+            case MazeAlgorithm.AldousBroder:
+                break;
+            case MazeAlgorithm.DepthFirstSearch:
+                break;
         }
         return Ok("Maze Built");
     }

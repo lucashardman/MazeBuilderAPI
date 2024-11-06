@@ -2,10 +2,13 @@
 
 namespace MazeBuilderAPI.Algorithms.Maze;
 
-public static class HuntAndKillAlgorithm
+public class HuntAndKillAlgorithm : MazeBuilderBaseAlgorithm
 {
-    public static List<List<MazeVertex>> Run(int height,int width, int seed = -1)
+    public void Run(int height, int width, int seed = -1)
     {
-        return new List<List<MazeVertex>>();
+        bool bIsInitialized = false;
+        if (Maze is null) bIsInitialized = Initialize(height, width);
+
+        if (bIsInitialized && Maze is not null) Maze[0][0].DownEdge = true;
     }
 }

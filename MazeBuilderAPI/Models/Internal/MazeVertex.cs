@@ -7,7 +7,7 @@ public class MazeVertex
     public bool LeftEdge { get; set; } = false;
     public bool RightEdge { get; set; } = false;
 
-    MazeVertex(bool upEdge, bool downEdge, bool leftEdge, bool rightEdge)
+    public MazeVertex(bool upEdge, bool downEdge, bool leftEdge, bool rightEdge)
     {
         UpEdge = upEdge;
         DownEdge = downEdge;
