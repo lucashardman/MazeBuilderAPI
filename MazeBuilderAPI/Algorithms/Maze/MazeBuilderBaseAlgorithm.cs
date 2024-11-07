@@ -1,21 +1,73 @@
-﻿using MazeBuilderAPI.Models.Internal;
+﻿using System.Text;
+using MazeBuilderAPI.Models.Internal;
 
 namespace MazeBuilderAPI.Algorithms.Maze;
 
 public class MazeBuilderBaseAlgorithm
 {
     protected List<List<MazeVertex>>? Maze { get; set; }
+    
+    // Use this array to move between vertex (up, down, left and right)
+    protected List<IntPoint> Directions =
+    [
+        new IntPoint(0, -1),
+        new IntPoint(0, 1),
+        new IntPoint(-1, 0),
+        new IntPoint(1, 0)
+    ];
+    
+    protected int Rows { get; init; }
+    protected int Columns { get; init; }
 
-    protected bool Initialize(int height, int width)
+    // Get vertex index using (x, y) coordinates
+    protected int GetVertexIndex(int x, int y) => y * Rows + x;
+        
+    // Check if vertex exists
+    protected bool IsValidVertex(int x, int y) => x >= 0 && x < Rows && y >= 0 && y < Columns;
+    
+    // Connect two vertex setting the edge between them to true
+    protected void RemoveWallBetween(int x1, int y1, int x2, int y2)
     {
-        if (height == 0 || width == 0) return false;
-        
-        Maze = new List<List<MazeVertex>>();
-        
-        for (var i = 0; i < height; i++)
+        if (Maze is null) return;
+            
+        if (x1 == x2)
         {
-            Maze.Add(new List<MazeVertex>());
-            for (var j = 0; j < width; j++)
+            if (y1 < y2)
+            {
+                Maze[y1][x1].DownEdge = true;
+                Maze[y2][x2].UpEdge = true;
+            }
+            else
+            {
+                Maze[y1][x1].UpEdge = true;
+                Maze[y2][x2].DownEdge = true;
+            }
+        }
+        else if (y1 == y2)
+        {
+            if (x1 < x2)
+            {
+                Maze[y1][x1].RightEdge = true;
+                Maze[y2][x2].LeftEdge = true;
+            }
+            else
+            {
+                Maze[y1][x1].LeftEdge = true;
+                Maze[y2][x2].RightEdge = true;
+            }
+        }
+    }
+    
+    protected bool Initialize()
+    {
+        if (Rows == 0 || Columns == 0) return false;
+        
+        Maze = [];
+        
+        for (var i = 0; i < Columns; i++)
+        {
+            Maze.Add([]);
+            for (var j = 0; j < Rows; j++)
             {
                 Maze[i].Add(new MazeVertex(false, false, false, false));
             }
@@ -28,37 +80,8 @@ public class MazeBuilderBaseAlgorithm
      * Função temporáriamente apenas converte cada celula para uma representação 3x3 para
      * uma visualização rápida e prática no console.
      */
-    public void ConvertMazeToResponseType()
+    public List<List<MazeVertex>>? ConvertMazeToResponseType()
     {
-        if (Maze is null) return;
-
-        int rows = Maze.Count;
-        int cols = Maze[0].Count;
-
-        for (int y = 0; y < rows; y++)
-        {
-            // Imprimir a parede superior de cada célula na linha atual
-            for (int x = 0; x < cols; x++)
-            {
-                Console.Write(Maze[y][x].UpEdge ? "# #" : "###");
-            }
-            Console.WriteLine("#"); // Fechar a linha com a borda direita do último vértice
-
-            // Imprimir as laterais esquerda e direita de cada célula
-            for (int x = 0; x < cols; x++)
-            {
-                Console.Write(Maze[y][x].LeftEdge ? " " : "#");
-                Console.Write(" ");
-                Console.Write(Maze[y][x].RightEdge ? " " : "#");
-            }
-            Console.WriteLine("#"); // Fechar a linha com a borda direita do último vértice
-            
-            // Imprimir a parede inferior de cada célula na linha atual
-            for (int x = 0; x < cols; x++)
-            {
-                Console.Write(Maze[y][x].DownEdge ? "# #" : "###");
-            }
-            Console.WriteLine("#"); // Fechar a linha com a borda direita do último vértice
-        }
+        return Maze;
     }
 }

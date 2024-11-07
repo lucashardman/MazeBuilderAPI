@@ -13,7 +13,6 @@
 
     <ItemGroup>
       <Folder Include="Algorithms\Helpers\" />
-      <Folder Include="Models\Responses\" />
     </ItemGroup>
 
 </Project>

@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using MazeBuilderAPI.Models.Enums;
 using MazeBuilderAPI.Algorithms.Maze;
+using MazeBuilderAPI.Models.Internal;
+using MazeBuilderAPI.Models.Responses;
 
 namespace MazeBuilderAPI.Controllers;
 
@@ -17,10 +19,9 @@ public class MazeController : MazeBuilderBaseController
         {
             case MazeAlgorithm.HuntAndKill:
             {
-                var maze = new HuntAndKillAlgorithm();
-                maze.Run(height, width, seed);
-                maze.ConvertMazeToResponseType();
-                break;
+                var maze = new HuntAndKillAlgorithm(height, width);
+                maze.Run(seed);
+                return Ok(maze.ConvertMazeToResponseType());
             }
             case MazeAlgorithm.RecursiveDivision:
                 break;
@@ -38,7 +39,9 @@ public class MazeController : MazeBuilderBaseController
                 break;
             case MazeAlgorithm.DepthFirstSearch:
                 break;
+            default:
+                break;
         }
-        return Ok("Maze Built");
+        return Ok();
     }
 }
