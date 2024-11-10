@@ -1,5 +1,4 @@
-﻿using System.Text;
-using MazeBuilderAPI.Models.Internal;
+﻿using MazeBuilderAPI.Models.Internal;
 
 namespace MazeBuilderAPI.Algorithms.Maze;
 
@@ -77,8 +76,7 @@ public class MazeBuilderBaseAlgorithm
     
     
     /*
-     * Função temporáriamente apenas converte cada celula para uma representação 3x3 para
-     * uma visualização rápida e prática no console.
+     * Convert the Maze class to the response class of the API. If necessary, implement it.
      */
     public List<List<MazeVertex>>? ConvertMazeToResponseType()
     {

@@ -19,9 +19,9 @@ public class MazeController : MazeBuilderBaseController
         {
             case MazeAlgorithm.HuntAndKill:
             {
-                var maze = new HuntAndKillAlgorithm(height, width);
-                maze.Run(seed);
-                return Ok(maze.ConvertMazeToResponseType());
+                var huntAndKill = new HuntAndKillAlgorithm(height, width);
+                huntAndKill.Run(seed);
+                return Ok(huntAndKill.ConvertMazeToResponseType());
             }
             case MazeAlgorithm.RecursiveDivision:
                 break;
@@ -30,7 +30,9 @@ public class MazeController : MazeBuilderBaseController
             case MazeAlgorithm.Eller:
                 break;
             case MazeAlgorithm.BinaryTree:
-                break;
+                var binaryTree = new BinaryTreeAlgorithm(height, width);
+                binaryTree.Run(seed);
+                return Ok(binaryTree.ConvertMazeToResponseType());
             case MazeAlgorithm.RandomizedKruskal:
                 break;
             case MazeAlgorithm.Sidewinder:
