@@ -15,11 +15,6 @@ public class BinaryTreeAlgorithm : MazeBuilderBaseAlgorithm
         bool bIsInitialized = false;
         if (Maze is null) bIsInitialized = Initialize();
         if (!bIsInitialized) return;
-
-        // Reset possible directions to only accept Up and Left
-        Directions.Clear();
-        Directions.Add(new IntPoint(0, -1));
-        Directions.Add(new IntPoint(-1, 0));
         
         // Initializing the random stream
         var randomStream = seed == -1 ? new Random() : new Random(seed);
