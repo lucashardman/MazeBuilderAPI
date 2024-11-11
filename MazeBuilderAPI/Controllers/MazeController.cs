@@ -40,7 +40,9 @@ public class MazeController : MazeBuilderBaseController
             case MazeAlgorithm.AldousBroder:
                 break;
             case MazeAlgorithm.DepthFirstSearch:
-                break;
+                var depthFirstSearch = new DepthFirstSearch(height, width);
+                depthFirstSearch.Run(seed);
+                return Ok(depthFirstSearch.ConvertMazeToResponseType());
             default:
                 break;
         }
