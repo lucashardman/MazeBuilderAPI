@@ -52,7 +52,7 @@ public class HuntAndKillAlgorithm : MazeBuilderBaseAlgorithm
                 var chosenNeighbor = neighbors[randomStream.Next(0, neighbors.Count-1)];
                 
                 // Add a vertex between current vertex and the current neighbor
-                RemoveWallBetween(currentX, currentY, chosenNeighbor.X, chosenNeighbor.Y);
+                HandleWallBetween(currentX, currentY, chosenNeighbor.X, chosenNeighbor.Y, true);
                 
                 // Move the current vertex to the selected neighbor and check as visited
                 currentX = chosenNeighbor.X;
@@ -85,7 +85,7 @@ public class HuntAndKillAlgorithm : MazeBuilderBaseAlgorithm
                                 // Connect the yet not visited vertex to the visited neighbor
                                 if (IsValidVertex(newX, newY) && visited[GetVertexIndex(newX, newY)])
                                 {
-                                    RemoveWallBetween(x, y, newX, newY);
+                                    HandleWallBetween(x, y, newX, newY, true);
                                     currentX = x;
                                     currentY = y;
                                     visited[GetVertexIndex(currentX, currentY)] = true;

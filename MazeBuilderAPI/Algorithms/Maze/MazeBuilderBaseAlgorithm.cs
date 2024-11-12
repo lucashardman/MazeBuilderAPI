@@ -25,7 +25,7 @@ public class MazeBuilderBaseAlgorithm
     protected bool IsValidVertex(int x, int y) => x >= 0 && x < Rows && y >= 0 && y < Columns;
     
     // Connect two vertex setting the edge between them to true
-    protected void RemoveWallBetween(int x1, int y1, int x2, int y2)
+    protected void HandleWallBetween(int x1, int y1, int x2, int y2, bool bRemoveWall)
     {
         if (Maze is null) return;
             
@@ -33,31 +33,31 @@ public class MazeBuilderBaseAlgorithm
         {
             if (y1 < y2)
             {
-                Maze[y1][x1].DownEdge = true;
-                Maze[y2][x2].UpEdge = true;
+                Maze[y1][x1].DownEdge = bRemoveWall;
+                Maze[y2][x2].UpEdge = bRemoveWall;
             }
             else
             {
-                Maze[y1][x1].UpEdge = true;
-                Maze[y2][x2].DownEdge = true;
+                Maze[y1][x1].UpEdge = bRemoveWall;
+                Maze[y2][x2].DownEdge = bRemoveWall;
             }
         }
         else if (y1 == y2)
         {
             if (x1 < x2)
             {
-                Maze[y1][x1].RightEdge = true;
-                Maze[y2][x2].LeftEdge = true;
+                Maze[y1][x1].RightEdge = bRemoveWall;
+                Maze[y2][x2].LeftEdge = bRemoveWall;
             }
             else
             {
-                Maze[y1][x1].LeftEdge = true;
-                Maze[y2][x2].RightEdge = true;
+                Maze[y1][x1].LeftEdge = bRemoveWall;
+                Maze[y2][x2].RightEdge = bRemoveWall;
             }
         }
     }
     
-    protected bool Initialize()
+    protected bool Initialize(bool bAddWalls = true)
     {
         if (Rows == 0 || Columns == 0) return false;
         
@@ -68,7 +68,22 @@ public class MazeBuilderBaseAlgorithm
             Maze.Add([]);
             for (var j = 0; j < Rows; j++)
             {
-                Maze[i].Add(new MazeVertex(false, false, false, false));
+                Maze[i].Add(bAddWalls
+                    ? new MazeVertex(false, false, false, false)
+                    : new MazeVertex(true, true, true, true));
+            }
+        }
+        if (!bAddWalls) // Add the maze limits if it's initialized with no wall
+        {
+            for (var i = 0; i < Rows; i++)
+            {
+                Maze[0][i].UpEdge = false;
+                Maze[Columns - 1][i].DownEdge = false;
+            }
+            for (var i = 0; i < Columns; i++)
+            {
+                Maze[i][0].LeftEdge = false;
+                Maze[i][Rows - 1].RightEdge = false;
             }
         }
         return true;

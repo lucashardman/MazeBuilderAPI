@@ -24,7 +24,9 @@ public class MazeController : MazeBuilderBaseController
                 return Ok(huntAndKill.ConvertMazeToResponseType());
             }
             case MazeAlgorithm.RecursiveDivision:
-                break;
+                var recursiveDivision = new RecursiveDivision(height, width);
+                recursiveDivision.Run(seed);
+                return Ok(recursiveDivision.ConvertMazeToResponseType());
             case MazeAlgorithm.RandomizedPrim:
                 break;
             case MazeAlgorithm.Eller:

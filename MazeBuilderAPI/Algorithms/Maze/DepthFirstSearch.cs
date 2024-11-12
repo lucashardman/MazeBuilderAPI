@@ -46,7 +46,7 @@ public class DepthFirstSearch : MazeBuilderBaseAlgorithm
                 var next = unvisitedNeighbors[randomStream.Next(unvisitedNeighbors.Count)];
 
                 // Remove wall between current vertex and neighbor
-                RemoveWallBetween(x, y, next.X, next.Y);
+                HandleWallBetween(x, y, next.X, next.Y, true);
 
                 // Stack and check neighbor as visited
                 visited[next.X, next.Y] = true;

@@ -31,22 +31,22 @@ public class BinaryTreeAlgorithm : MazeBuilderBaseAlgorithm
                 {
                     if (randomStream.Next(2) == 0) // 0 = Up, 1 = Left
                     {
-                        RemoveWallBetween(x, y, x, y - 1); // Remove Up wall
+                        HandleWallBetween(x, y, x, y - 1, true); // Remove Up wall
                     }
                     else
                     {
-                        RemoveWallBetween(x, y, x - 1, y); // Remove Left wall
+                        HandleWallBetween(x, y, x - 1, y, true); // Remove Left wall
                     }
                 }
                 else if (canGoLeft)
                 {
                     // If it can't go Up, go Left
-                    RemoveWallBetween(x, y, x - 1, y);
+                    HandleWallBetween(x, y, x - 1, y, true);
                 }
                 else if (canGoUp)
                 {
                     // If it can't go Left, go Up
-                    RemoveWallBetween(x, y, x, y - 1);
+                    HandleWallBetween(x, y, x, y - 1, true);
                 }
             }
         }
