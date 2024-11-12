@@ -19,14 +19,14 @@ public class DepthFirstSearch : MazeBuilderBaseAlgorithm
         // Initializing the random stream
         var randomStream = seed == -1 ? new Random() : new Random(seed);
 
-        var visited = new bool[Columns, Rows];
+        var visited = new bool[Rows, Columns];
 
         // Initialize DFS stack
         Stack<IntPoint> stack = new Stack<IntPoint>();
 
         // Choose a random first vertex
-        var startX = randomStream.Next(Columns);
-        var startY = randomStream.Next(Rows);
+        var startX = randomStream.Next(Rows);
+        var startY = randomStream.Next(Columns);
         stack.Push(new IntPoint(startX, startY));
         visited[startX, startY] = true;
 

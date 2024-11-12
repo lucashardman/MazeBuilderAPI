@@ -19,9 +19,9 @@ public class BinaryTreeAlgorithm : MazeBuilderBaseAlgorithm
         // Initializing the random stream
         var randomStream = seed == -1 ? new Random() : new Random(seed);
         
-        for (int y = 0; y < Rows; y++)
+        for (int y = 0; y < Columns; y++)
         {
-            for (int x = 0; x < Columns; x++)
+            for (int x = 0; x < Rows; x++)
             {
                 bool canGoLeft = x > 0; // Can go left, if it's not in the first column
                 bool canGoUp = y > 0; //Can go up, if it's not in the first row
