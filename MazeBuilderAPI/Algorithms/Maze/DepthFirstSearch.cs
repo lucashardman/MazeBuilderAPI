@@ -12,9 +12,11 @@ public class DepthFirstSearch : MazeBuilderBaseAlgorithm
 
     public void Run(int seed = -1)
     {
-        bool bIsInitialized = false;
-        if (Maze is null) bIsInitialized = Initialize();
-        if (!bIsInitialized) return;
+        if (Maze is null)
+        {
+            var bIsInitialized = Initialize(true);
+            if (!bIsInitialized) return;
+        }
 
         // Initializing the random stream
         var randomStream = seed == -1 ? new Random() : new Random(seed);

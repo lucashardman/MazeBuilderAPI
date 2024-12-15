@@ -12,16 +12,18 @@ public class BinaryTreeAlgorithm : MazeBuilderBaseAlgorithm
 
     public void Run(int seed = -1)
     {
-        bool bIsInitialized = false;
-        if (Maze is null) bIsInitialized = Initialize();
-        if (!bIsInitialized) return;
+        if (Maze is null)
+        {
+            var bIsInitialized = Initialize(true);
+            if (!bIsInitialized) return;
+        }
         
         // Initializing the random stream
         var randomStream = seed == -1 ? new Random() : new Random(seed);
         
         for (int y = 0; y < Columns; y++)
         {
-            for (int x = 0; x < Rows; x++)
+            for (int x = 0; x < Rows; x++)  
             {
                 bool canGoLeft = x > 0; // Can go left, if it's not in the first column
                 bool canGoUp = y > 0; //Can go up, if it's not in the first row

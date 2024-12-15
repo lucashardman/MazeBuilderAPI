@@ -11,9 +11,11 @@ public class HuntAndKillAlgorithm : MazeBuilderBaseAlgorithm
 
     public void Run(int seed = -1)
     {
-        bool bIsInitialized = false;
-        if (Maze is null) bIsInitialized = Initialize();
-        if (!bIsInitialized) return;
+        if (Maze is null)
+        {
+            var bIsInitialized = Initialize(true);
+            if (!bIsInitialized) return;
+        }
         
         // Track visited vertices, initializing with all unvisited
         var visited = Enumerable.Repeat(false, Rows * Columns).ToList();

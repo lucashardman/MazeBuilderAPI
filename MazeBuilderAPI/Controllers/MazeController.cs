@@ -27,10 +27,14 @@ public class MazeController : MazeBuilderBaseController
                 var recursiveDivision = new RecursiveDivision(height, width);
                 recursiveDivision.Run(seed);
                 return Ok(recursiveDivision.ConvertMazeToResponseType());
-            case MazeAlgorithm.RandomizedPrim:
-                break;
+            case MazeAlgorithm.SimplifiedPrim:
+                var simplifiedPrim = new SimplifiedPrim(height, width);
+                simplifiedPrim.Run(seed);
+                return Ok(simplifiedPrim.ConvertMazeToResponseType());
             case MazeAlgorithm.Eller:
-                break;
+                var eller = new EllerAlgorithm(height, width);
+                eller.Run(seed);
+                return Ok(eller.ConvertMazeToResponseType());
             case MazeAlgorithm.BinaryTree:
                 var binaryTree = new BinaryTreeAlgorithm(height, width);
                 binaryTree.Run(seed);

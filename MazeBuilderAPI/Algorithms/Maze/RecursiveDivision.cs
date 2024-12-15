@@ -76,6 +76,6 @@ public class RecursiveDivision : MazeBuilderBaseAlgorithm
     {
         if (width < height) return true; // Horizontal
         if (height < width) return false; // Vertical
-        return _randomStream.Next(2) == 0; // Aleatório
+        return _randomStream.Next(2) == 0; // Random
     }
 }

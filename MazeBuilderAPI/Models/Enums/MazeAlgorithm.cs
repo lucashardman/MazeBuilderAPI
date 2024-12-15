@@ -4,7 +4,7 @@ public enum MazeAlgorithm
 {
     HuntAndKill,
     RecursiveDivision,
-    RandomizedPrim,
+    SimplifiedPrim,
     Eller,
     BinaryTree,
     RandomizedKruskal,

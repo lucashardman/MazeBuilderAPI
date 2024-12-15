@@ -29,6 +29,8 @@ public class MazeBuilderBaseAlgorithm
     {
         if (Maze is null) return;
             
+        if (!IsValidVertex(x1, y1) || !IsValidVertex(x2, y2)) return;
+        
         if (x1 == x2)
         {
             if (y1 < y2)
@@ -57,7 +59,7 @@ public class MazeBuilderBaseAlgorithm
         }
     }
     
-    protected bool Initialize(bool bAddWalls = true)
+    protected bool Initialize(bool bAddWalls)
     {
         if (Rows == 0 || Columns == 0) return false;
         
