@@ -48,7 +48,9 @@ public class MazeController : MazeBuilderBaseController
                 sidewinder.Run(seed);
                 return Ok(sidewinder.ConvertMazeToResponseType());
             case MazeAlgorithm.AldousBroder:
-                break;
+                var aldousBroder = new AldousBroder(height, width);
+                aldousBroder.Run(seed);
+                return Ok(aldousBroder.ConvertMazeToResponseType());
             case MazeAlgorithm.DepthFirstSearch:
                 var depthFirstSearch = new DepthFirstSearch(height, width);
                 depthFirstSearch.Run(seed);
