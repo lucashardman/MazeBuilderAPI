@@ -40,9 +40,13 @@ public class MazeController : MazeBuilderBaseController
                 binaryTree.Run(seed);
                 return Ok(binaryTree.ConvertMazeToResponseType());
             case MazeAlgorithm.RandomizedKruskal:
-                break;
+                var randomizedKruskal = new RandomizedKruskal(height, width);
+                randomizedKruskal.Run(seed);
+                return Ok(randomizedKruskal.ConvertMazeToResponseType());
             case MazeAlgorithm.Sidewinder:
-                break;
+                var sidewinder = new Sidewinder(height, width);
+                sidewinder.Run(seed);
+                return Ok(sidewinder.ConvertMazeToResponseType());
             case MazeAlgorithm.AldousBroder:
                 break;
             case MazeAlgorithm.DepthFirstSearch:
