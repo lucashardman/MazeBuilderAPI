@@ -1,0 +1,10 @@
+﻿services:
+  maze-builder-api:
+    build: .
+    container_name: maze-builder-api
+    ports:
+      - "7013:7013"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:7013
+    restart: unless-stopped

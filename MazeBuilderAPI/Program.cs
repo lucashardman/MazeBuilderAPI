@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.WebHost.UseUrls("http://+:7013");
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -13,32 +14,32 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     }
 );
 
-// Adiciona o serviço de CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()     // Permite qualquer origem
-            .AllowAnyMethod()     // Permite qualquer método HTTP
-            .AllowAnyHeader();    // Permite qualquer cabeçalho
+        policy.AllowAnyOrigin()   
+            .AllowAnyMethod()  
+            .AllowAnyHeader();   
     });
 });
 
 var app = builder.Build();
-
+app.UsePathBase("/MazeBuilder");
 app.UseCors("AllowAll");
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    // Fazendo isso só para padronizar e o swagger ficar em /docs como nas outras APIs que faço com FastAPI
+    c.RoutePrefix = "docs"; 
+    c.SwaggerEndpoint("/MazeBuilder/swagger/v1/swagger.json", "MazeBuilder API V1");
+});
+
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
