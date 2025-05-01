@@ -1,4 +1,6 @@
-﻿using MazeBuilderAPI.Models.Internal;
+﻿using MazeBuilderAPI.Models.Enums;
+using MazeBuilderAPI.Models.Internal;
+using MazeBuilderAPI.Models.Responses;
 
 namespace MazeBuilderAPI.Algorithms.Maze;
 
@@ -17,6 +19,8 @@ public class MazeBuilderBaseAlgorithm
     
     protected int Rows { get; init; }
     protected int Columns { get; init; }
+    protected int Seed { get; init; }
+    protected MazeAlgorithm Algorithm { get; init; }
 
     // Get vertex index using (x, y) coordinates
     protected int GetVertexIndex(int x, int y) => y * Rows + x;
@@ -95,8 +99,21 @@ public class MazeBuilderBaseAlgorithm
     /*
      * Convert the Maze class to the response class of the API. If necessary, implement it.
      */
-    public List<List<MazeVertex>>? ConvertMazeToResponseType()
+    public MazeResponse? ConvertMazeToResponseType()
     {
-        return Maze;
+        if (Maze is null)
+        {
+            Maze = [];
+        }
+        var response = new MazeResponse
+        {
+            Maze = Maze,
+            Seed = Seed,
+            Rows = Rows,
+            Columns = Columns,
+            Algorithm = Algorithm
+        };
+    
+        return response;
     }
 }

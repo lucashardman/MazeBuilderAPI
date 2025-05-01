@@ -1,13 +1,16 @@
-﻿using MazeBuilderAPI.Models.Internal;
+﻿using MazeBuilderAPI.Models.Enums;
+using MazeBuilderAPI.Models.Internal;
 
 namespace MazeBuilderAPI.Algorithms.Maze;
 
 public class Sidewinder : MazeBuilderBaseAlgorithm
 {
-    public Sidewinder(int columns, int rows)
+    public Sidewinder(int columns, int rows, int seed, MazeAlgorithm algorithm)
     {
         Columns = columns;
         Rows = rows;
+        Seed = seed;
+        Algorithm = algorithm;
     }
 
     public void Run(int seed = -1)

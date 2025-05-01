@@ -1,13 +1,17 @@
-﻿namespace MazeBuilderAPI.Algorithms.Maze;
+﻿using MazeBuilderAPI.Models.Enums;
+
+namespace MazeBuilderAPI.Algorithms.Maze;
 
 public class RecursiveDivision : MazeBuilderBaseAlgorithm
 {
     private Random _randomStream;
     
-    public RecursiveDivision(int columns, int rows)
+    public RecursiveDivision(int columns, int rows, int seed, MazeAlgorithm algorithm)
     {
         Columns = columns;
         Rows = rows;
+        Seed = seed;
+        Algorithm = algorithm;
         _randomStream = new Random();
     }
 

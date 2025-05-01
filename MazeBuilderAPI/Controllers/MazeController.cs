@@ -11,53 +11,57 @@ namespace MazeBuilderAPI.Controllers;
 public class MazeController : MazeBuilderBaseController
 {
     [HttpGet]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(MazeResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public IActionResult Get([Required]int height, [Required] int width, [Required] MazeAlgorithm mazeAlgorithm, int seed = -1)
     {
+        if (seed == -1)
+        {
+            Random random = new Random();
+            seed = random.Next(1, int.MaxValue);
+        }
         switch (mazeAlgorithm)
         {
             case MazeAlgorithm.HuntAndKill:
             {
-                var huntAndKill = new HuntAndKillAlgorithm(height, width);
+                var huntAndKill = new HuntAndKillAlgorithm(height, width, seed, mazeAlgorithm);
                 huntAndKill.Run(seed);
                 return Ok(huntAndKill.ConvertMazeToResponseType());
             }
             case MazeAlgorithm.RecursiveDivision:
-                var recursiveDivision = new RecursiveDivision(height, width);
+                var recursiveDivision = new RecursiveDivision(height, width, seed, mazeAlgorithm);
                 recursiveDivision.Run(seed);
                 return Ok(recursiveDivision.ConvertMazeToResponseType());
             case MazeAlgorithm.SimplifiedPrim:
-                var simplifiedPrim = new SimplifiedPrim(height, width);
+                var simplifiedPrim = new SimplifiedPrim(height, width, seed, mazeAlgorithm);
                 simplifiedPrim.Run(seed);
                 return Ok(simplifiedPrim.ConvertMazeToResponseType());
             case MazeAlgorithm.Eller:
-                var eller = new EllerAlgorithm(height, width);
+                var eller = new EllerAlgorithm(height, width, seed, mazeAlgorithm);
                 eller.Run(seed);
                 return Ok(eller.ConvertMazeToResponseType());
             case MazeAlgorithm.BinaryTree:
-                var binaryTree = new BinaryTreeAlgorithm(height, width);
+                var binaryTree = new BinaryTreeAlgorithm(height, width, seed, mazeAlgorithm);
                 binaryTree.Run(seed);
                 return Ok(binaryTree.ConvertMazeToResponseType());
             case MazeAlgorithm.RandomizedKruskal:
-                var randomizedKruskal = new RandomizedKruskal(height, width);
+                var randomizedKruskal = new RandomizedKruskal(height, width, seed, mazeAlgorithm);
                 randomizedKruskal.Run(seed);
                 return Ok(randomizedKruskal.ConvertMazeToResponseType());
             case MazeAlgorithm.Sidewinder:
-                var sidewinder = new Sidewinder(height, width);
+                var sidewinder = new Sidewinder(height, width, seed, mazeAlgorithm);
                 sidewinder.Run(seed);
                 return Ok(sidewinder.ConvertMazeToResponseType());
             case MazeAlgorithm.AldousBroder:
-                var aldousBroder = new AldousBroder(height, width);
+                var aldousBroder = new AldousBroder(height, width, seed, mazeAlgorithm);
                 aldousBroder.Run(seed);
                 return Ok(aldousBroder.ConvertMazeToResponseType());
             case MazeAlgorithm.DepthFirstSearch:
-                var depthFirstSearch = new DepthFirstSearch(height, width);
+                var depthFirstSearch = new DepthFirstSearch(height, width, seed, mazeAlgorithm);
                 depthFirstSearch.Run(seed);
                 return Ok(depthFirstSearch.ConvertMazeToResponseType());
             default:
-                break;
+                return BadRequest("Algoritmo não suportado");
         }
-        return Ok();
     }
 }

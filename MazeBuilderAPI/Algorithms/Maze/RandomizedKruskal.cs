@@ -1,13 +1,16 @@
-﻿using MazeBuilderAPI.Models.Internal;
+﻿using MazeBuilderAPI.Models.Enums;
+using MazeBuilderAPI.Models.Internal;
 
 namespace MazeBuilderAPI.Algorithms.Maze;
 
 public class RandomizedKruskal : MazeBuilderBaseAlgorithm
 {
-    public RandomizedKruskal(int columns, int rows)
+    public RandomizedKruskal(int columns, int rows, int seed, MazeAlgorithm algorithm)
     {
         Columns = columns;
         Rows = rows;
+        Seed = seed;
+        Algorithm = algorithm;
     }
 
     public void Run(int seed = -1)
