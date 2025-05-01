@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using MazeBuilderAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +7,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.WebHost.UseUrls("http://+:7013");
-
+builder.Services.AddScoped<MazeService>();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers().AddJsonOptions(options =>
     {
