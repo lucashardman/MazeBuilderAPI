@@ -2,7 +2,7 @@
 
 namespace MazeBuilderAPI.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public abstract class MazeBuilderBaseController : ControllerBase
 {
