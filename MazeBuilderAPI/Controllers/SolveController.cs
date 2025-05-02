@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MazeBuilderAPI.Models.Enums;
+using MazeBuilderAPI.Models.Responses;
 using MazeBuilderAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,14 +9,15 @@ namespace MazeBuilderAPI.Controllers;
 public class SolveController :  MazeBuilderBaseController
 {
     private readonly MazeService _mazeService;
-    
+    private readonly SolveService _solveService;
     public SolveController(MazeService mazeService)
     {
         _mazeService = mazeService;
+        _solveService = new SolveService();
     }
     
-    [HttpGet("solve")]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [HttpGet]
+    [ProducesResponseType(typeof(SolveResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public IActionResult Solve(
         [Required] int seed,
@@ -28,7 +30,12 @@ public class SolveController :  MazeBuilderBaseController
         try
         {
             var mazeResponse = _mazeService.Generate(height, width, mazeAlgorithm, seed);
-            return Ok(mazeResponse);
+            if (mazeResponse == null)
+            {
+                return Problem();
+            }
+            var solveResponse = _solveService.Solve(mazeResponse.Maze, pathfindingAlgorithm);
+            return Ok(solveResponse);
         }
         catch (ArgumentException ex)
         {
