@@ -11,10 +11,10 @@ public class MazeBuilderBaseAlgorithm
     // Use this array to move between vertex (up, down, left and right)
     protected List<IntPoint> Directions =
     [
-        new IntPoint(0, -1),
-        new IntPoint(0, 1),
-        new IntPoint(-1, 0),
-        new IntPoint(1, 0)
+        new(0, -1),
+        new(0, 1),
+        new(-1, 0),
+        new(1, 0)
     ];
     
     protected int Rows { get; init; }
@@ -101,10 +101,7 @@ public class MazeBuilderBaseAlgorithm
      */
     public MazeResponse? ConvertMazeToResponseType()
     {
-        if (Maze is null)
-        {
-            Maze = [];
-        }
+        Maze ??= [];
         var response = new MazeResponse
         {
             Maze = Maze,

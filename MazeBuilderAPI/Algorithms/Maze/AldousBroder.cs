@@ -22,8 +22,8 @@ public class AldousBroder : MazeBuilderBaseAlgorithm
         }
         var randomStream = seed == -1 ? new Random() : new Random(seed);
         var visited = new HashSet<(int, int)>();
-        int x = randomStream.Next(Columns);
-        int y = randomStream.Next(Rows);
+        int x = randomStream.Next(Rows);
+        int y = randomStream.Next(Columns);
         visited.Add((x, y));
         
         while (visited.Count < Columns * Rows)
@@ -43,6 +43,7 @@ public class AldousBroder : MazeBuilderBaseAlgorithm
                 x = nx;
                 y = ny;
             }
+            Console.WriteLine($"({x}, {y})");
         }
     }
 }

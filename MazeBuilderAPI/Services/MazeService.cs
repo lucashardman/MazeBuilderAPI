@@ -12,7 +12,9 @@ public class MazeService
          {
             Random random = new Random();
             seed = random.Next(1, int.MaxValue);
-        }
+         }
+
+         Console.WriteLine(seed);
         switch (mazeAlgorithm)
         {
             case MazeAlgorithm.HuntAndKill:
