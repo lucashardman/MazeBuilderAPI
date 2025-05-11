@@ -1,9 +1,7 @@
-﻿using MazeBuilderAPI.Models.Internal;
-using MazeBuilderAPI.Models.Responses;
-using System;
-using System.Collections.Generic;
+﻿namespace MazeBuilderAPI.Algorithms.Pathfinding;
 
-namespace MazeBuilderAPI.Algorithms.Pathfinding;
+using Models.Internal;
+using Models.Responses;
 
 public class DepthFirstSearch
 {
@@ -102,15 +100,15 @@ public class DepthFirstSearch
         
         while (currentVertex != null)
         {
-            path.Add(currentVertex.Value);
+            path.Add(currentVertex);
             
-            if (currentVertex.Value.X == start.X && currentVertex.Value.Y == start.Y)
+            if (currentVertex.X == start.X && currentVertex.Y == start.Y)
                 break;
                 
-            if (!cameFrom.ContainsKey(currentVertex.Value))
+            if (!cameFrom.ContainsKey(currentVertex))
                 break; // Proteção contra loops infinitos
                 
-            currentVertex = cameFrom[currentVertex.Value];
+            currentVertex = cameFrom[currentVertex];
         }
         
         // Inverter o caminho para que seja do início para o fim

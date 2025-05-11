@@ -1,21 +1,15 @@
-﻿using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Models.Internal;
+﻿namespace MazeBuilderAPI.Algorithms.Maze;
 
-namespace MazeBuilderAPI.Algorithms.Maze;
+using Models.Enums;
+using Models.Internal;
 
 public class DepthFirstSearch : MazeBuilderBaseAlgorithm
 {
-
     public override MazeAlgorithm MazeAlgorithmName  => MazeAlgorithm.DepthFirstSearch;
+    protected override bool ShouldInitializeWalls => true;
 
     public override void Generate()
     {
-        if (Maze is null)
-        {
-            var bIsInitialized = InitializeBoard(true);
-            if (!bIsInitialized) return;
-        }
-
         var visited = new bool[Rows, Columns];
 
         // Initialize DFS stack

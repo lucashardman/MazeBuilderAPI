@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Models.Responses;
-using MazeBuilderAPI.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿namespace MazeBuilderAPI.Controllers;
 
-namespace MazeBuilderAPI.Controllers;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
+using Models.Enums;
+using Models.Responses;
+using Services;
 
 public class SolveController(MazeService mazeService) : MazeBuilderBaseController
 {

@@ -1,7 +1,8 @@
-﻿using MazeBuilderAPI.Models.Enums;
+﻿namespace MazeBuilderAPI.Models.Responses;
 
-namespace MazeBuilderAPI.Models.Responses;
-using MazeBuilderAPI.Models.Internal;
+using Enums;
+using Internal;
+
 public class MazeResponse
 {
     public List<List<MazeVertex>> Maze { get; set; }

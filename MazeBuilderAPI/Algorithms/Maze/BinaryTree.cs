@@ -1,19 +1,14 @@
-﻿using MazeBuilderAPI.Models.Enums;
+﻿namespace MazeBuilderAPI.Algorithms.Maze;
 
-namespace MazeBuilderAPI.Algorithms.Maze;
+using Models.Enums;
 
 public class BinaryTree : MazeBuilderBaseAlgorithm
 {
     public override MazeAlgorithm MazeAlgorithmName  => MazeAlgorithm.BinaryTree;
+    protected override bool ShouldInitializeWalls => true;
 
     public override void Generate()
     {
-        if (Maze is null)
-        {
-            var bIsInitialized = InitializeBoard(true);
-            if (!bIsInitialized) return;
-        }
-
         for (int y = 0; y < Columns; y++)
         {
             for (int x = 0; x < Rows; x++)

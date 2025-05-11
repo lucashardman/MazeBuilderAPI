@@ -1,16 +1,9 @@
 ﻿namespace MazeBuilderAPI.Models.Internal;
 
-public struct IntPoint
+public class IntPoint(int x, int y)
 {
-    public int X { get; }
-    public int Y { get; }
+    public int X { get; } = x;
+    public int Y { get; } = y;
 
-    public IntPoint(int x, int y)
-    {
-        X = x;
-        Y = y;
-    }
-
-    // Override do ToString() para facilitar a visualização
     public override string ToString() => $"({X}, {Y})";
 }

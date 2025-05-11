@@ -1,9 +1,9 @@
-﻿using MazeBuilderAPI.Algorithms.Pathfinding;
-using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Models.Internal;
-using MazeBuilderAPI.Models.Responses;
+﻿namespace MazeBuilderAPI.Services;
 
-namespace MazeBuilderAPI.Services;
+using Algorithms.Pathfinding;
+using Models.Enums;
+using Models.Internal;
+using Models.Responses;
 
 public class SolveService
 {

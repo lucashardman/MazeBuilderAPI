@@ -1,20 +1,14 @@
-﻿using MazeBuilderAPI.Models.Enums;
+﻿namespace MazeBuilderAPI.Algorithms.Maze;
 
-namespace MazeBuilderAPI.Algorithms.Maze;
+using Models.Enums;
 
 public class AldousBroder : MazeBuilderBaseAlgorithm
 {
     public override MazeAlgorithm MazeAlgorithmName  => MazeAlgorithm.AldousBroder;
+    protected override bool ShouldInitializeWalls => true;
 
     public override void Generate()
     {
-        if (Maze is null)
-        {
-            var bIsInitialized = InitializeBoard(true);
-            if (!bIsInitialized) return;
-        }
-
-        // var randomStream = Seed == -1 ? new Random() : new Random(Seed);
         var visited = new HashSet<(int, int)>();
         int x = RandomStream.Next(Rows);
         int y = RandomStream.Next(Columns);

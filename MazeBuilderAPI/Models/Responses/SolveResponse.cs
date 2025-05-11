@@ -1,5 +1,6 @@
 ﻿namespace MazeBuilderAPI.Models.Responses;
-using MazeBuilderAPI.Models.Internal;
+
+using Internal;
 
 public class SolveResponse
 {

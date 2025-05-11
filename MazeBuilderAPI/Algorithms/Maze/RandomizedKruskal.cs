@@ -1,21 +1,14 @@
-﻿using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Models.Internal;
+﻿namespace MazeBuilderAPI.Algorithms.Maze;
 
-namespace MazeBuilderAPI.Algorithms.Maze;
+using Models.Enums;
 
 public class RandomizedKruskal : MazeBuilderBaseAlgorithm
 {
-
     public override MazeAlgorithm MazeAlgorithmName  => MazeAlgorithm.RandomizedKruskal;
+    protected override bool ShouldInitializeWalls => true;
 
     public override void Generate()
     {
-        if (Maze is null)
-        {
-            var bIsInitialized = InitializeBoard(true);
-            if (!bIsInitialized) return;
-        }
-
         var walls = new List<(int x1, int y1, int x2, int y2)>();
         var sets = new Dictionary<(int, int), int>();
         var nextSet = 1;

@@ -1,21 +1,14 @@
-﻿using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Models.Internal;
+﻿namespace MazeBuilderAPI.Algorithms.Maze;
 
-namespace MazeBuilderAPI.Algorithms.Maze;
+using Models.Enums;
 
 public class Eller : MazeBuilderBaseAlgorithm
 {
-
     public override MazeAlgorithm MazeAlgorithmName  => MazeAlgorithm.Eller;
+    protected override bool ShouldInitializeWalls => true;
 
     public override void Generate()
     {
-        if (Maze is null)
-        {
-            var bIsInitialized = InitializeBoard(true);
-            if (!bIsInitialized) return;
-        }
-
         var sets = new Dictionary<int, int>();
         var nextSet = 1;
 

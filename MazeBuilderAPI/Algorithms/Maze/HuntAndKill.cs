@@ -1,20 +1,15 @@
-﻿using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Models.Internal;
-namespace MazeBuilderAPI.Algorithms.Maze;
+﻿namespace MazeBuilderAPI.Algorithms.Maze;
+
+using Models.Enums;
+using Models.Internal;
 
 public class HuntAndKill : MazeBuilderBaseAlgorithm
 {
-
     public override MazeAlgorithm MazeAlgorithmName  => MazeAlgorithm.HuntAndKill;
+    protected override bool ShouldInitializeWalls => true;
 
     public override void Generate()
     {
-        if (Maze is null)
-        {
-            var bIsInitialized = InitializeBoard(true);
-            if (!bIsInitialized) return;
-        }
-
         // Track visited vertices, initializing with all unvisited
         var visited = Enumerable.Repeat(false, Rows * Columns).ToList();
 

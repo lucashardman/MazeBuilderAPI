@@ -1,20 +1,14 @@
-﻿using MazeBuilderAPI.Models.Enums;
+﻿namespace MazeBuilderAPI.Algorithms.Maze;
 
-namespace MazeBuilderAPI.Algorithms.Maze;
+using Models.Enums;
 
 public class RecursiveDivision : MazeBuilderBaseAlgorithm
 {
-
     public override MazeAlgorithm MazeAlgorithmName  => MazeAlgorithm.RecursiveDivision;
+    protected override bool ShouldInitializeWalls => false;
 
     public override void Generate()
     {
-        if (Maze is null)
-        {
-            var bIsInitialized = InitializeBoard(false);
-            if (!bIsInitialized) return;
-        }
-
         Divide(0, 0, Rows, Columns);
     }
 

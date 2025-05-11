@@ -1,13 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace MazeBuilderAPI.Controllers;
+
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Algorithms.Maze;
-using MazeBuilderAPI.Models.Internal;
-using MazeBuilderAPI.Models.Responses;
-using MazeBuilderAPI.Services;
-
-namespace MazeBuilderAPI.Controllers;
-
+using Models.Enums;
+using Models.Responses;
+using Services;
 
 public class MazeController(MazeService mazeService) : MazeBuilderBaseController
 {
@@ -24,6 +21,7 @@ public class MazeController(MazeService mazeService) : MazeBuilderBaseController
         try
         {
             var mazeResponse = mazeService.Generate(height, width, mazeAlgorithm, seed);
+            if (mazeResponse == null) return BadRequest("Não foi possível gerar o labirinto com os parâmetros fornecidos.");
             return Ok(mazeResponse);
         }
         catch (ArgumentException ex)

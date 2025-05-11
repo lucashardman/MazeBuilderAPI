@@ -1,7 +1,7 @@
 ﻿namespace MazeBuilderAPI.Services;
-using MazeBuilderAPI.Interfaces;
-using MazeBuilderAPI.Models.Enums;
 
+using Interfaces;
+using Models.Enums;
 
 public class MazeAlgorithmFactory(IEnumerable<IMazeStrategy> algorithms) : IMazeAlgorithmFactory
 {

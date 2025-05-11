@@ -1,21 +1,15 @@
-﻿using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Models.Internal;
+﻿namespace MazeBuilderAPI.Algorithms.Maze;
 
-namespace MazeBuilderAPI.Algorithms.Maze;
+using Models.Enums;
+using Models.Internal;
 
 public class SimplifiedPrim : MazeBuilderBaseAlgorithm
 {
-
     public override MazeAlgorithm MazeAlgorithmName  => MazeAlgorithm.SimplifiedPrim;
+    protected override bool ShouldInitializeWalls => true;
 
     public override void Generate()
     {
-        if (Maze is null)
-        {
-            var bIsInitialized = InitializeBoard(true);
-            if (!bIsInitialized) return;
-        }
-
         var startX = RandomStream.Next(Rows);
         var startY = RandomStream.Next(Columns);
 
@@ -56,7 +50,7 @@ public class SimplifiedPrim : MazeBuilderBaseAlgorithm
             var nx = cell.X + direction.X;
             var ny = cell.Y + direction.Y;
 
-            // Check if cell is valid (not off boundaries and unvisited)
+            // Check if vertex is valid (not off boundaries and unvisited)
             if (IsValidVertex(nx, ny) && !IsVisited(nx, ny))
             {
                 neighbors.Add(new IntPoint(nx, ny));
@@ -69,7 +63,7 @@ public class SimplifiedPrim : MazeBuilderBaseAlgorithm
         if (Maze is null) return false;
 
         var vertex = Maze[y][x];
-        // Check if all walls are closed, if so the cell is not visited yet
+        // Check if all walls are closed, if so, the cell is not visited yet
         return (vertex.LeftEdge || vertex.RightEdge || vertex.UpEdge || vertex.DownEdge);
     }
 }

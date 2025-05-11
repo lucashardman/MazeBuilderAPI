@@ -1,13 +1,14 @@
-﻿using MazeBuilderAPI.Interfaces;
-using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Models.Internal;
-using MazeBuilderAPI.Models.Responses;
+﻿namespace MazeBuilderAPI.Algorithms.Maze;
 
-namespace MazeBuilderAPI.Algorithms.Maze;
+using Interfaces;
+using Models.Enums;
+using Models.Internal;
+using Models.Responses;
 
 public abstract class MazeBuilderBaseAlgorithm : IMazeStrategy
 {
     public abstract MazeAlgorithm MazeAlgorithmName { get; }
+    protected abstract bool ShouldInitializeWalls { get; }
     public abstract void Generate();
     protected List<List<MazeVertex>>? Maze { get; set; }
     
@@ -31,17 +32,20 @@ public abstract class MazeBuilderBaseAlgorithm : IMazeStrategy
     // Check if vertex exists
     protected bool IsValidVertex(int x, int y) => x >= 0 && x < Rows && y >= 0 && y < Columns;
 
-    public void Initialize(int height, int width, int seed = -1)
+    public bool Initialize(int height, int width, int seed = -1)
     {
         if (seed == -1)
         {
             var randomStream = new Random();
             seed = randomStream.Next(1, int.MaxValue);
         }
+
         RandomStream = new Random(seed);
         Columns = height;
         Rows = width;
         Seed = seed;
+
+        return InitializeBoard();
     }
     
     // Connect two vertex setting the edge between them to true
@@ -79,7 +83,7 @@ public abstract class MazeBuilderBaseAlgorithm : IMazeStrategy
         }
     }
     
-    protected bool InitializeBoard(bool bAddWalls)
+    private bool InitializeBoard()
     {
         if (Rows == 0 || Columns == 0) return false;
         
@@ -90,12 +94,12 @@ public abstract class MazeBuilderBaseAlgorithm : IMazeStrategy
             Maze.Add([]);
             for (var j = 0; j < Rows; j++)
             {
-                Maze[i].Add(bAddWalls
+                Maze[i].Add(ShouldInitializeWalls
                     ? new MazeVertex(false, false, false, false)
                     : new MazeVertex(true, true, true, true));
             }
         }
-        if (!bAddWalls) // Add the maze limits if it's initialized with no wall
+        if (!ShouldInitializeWalls) // Add the maze limits if it's initialized with no wall
         {
             for (var i = 0; i < Rows; i++)
             {
@@ -111,11 +115,10 @@ public abstract class MazeBuilderBaseAlgorithm : IMazeStrategy
         return true;
     }
 
-
     /*
      * Convert the Maze class to the response class of the API.
      */
-    public MazeResponse? ConvertMazeToResponseType()
+    public MazeResponse ConvertMazeToResponseType()
     {
         Maze ??= [];
         var response = new MazeResponse

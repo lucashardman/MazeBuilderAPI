@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿namespace MazeBuilderAPI.Controllers;
 
-namespace MazeBuilderAPI.Controllers;
+using Microsoft.AspNetCore.Mvc;
 
 [Route("[controller]")]
 [ApiController]
