@@ -8,12 +8,6 @@ public class MazeService(IMazeAlgorithmFactory factory)
 {
     public MazeResponse? Generate(int height, int width, MazeAlgorithm mazeAlgorithmName, int seed)
     {
-        if (seed == -1)
-        {
-            Random random = new Random();
-            seed = random.Next(1, int.MaxValue);
-        }
-
         var mazeAlgorithm = factory.GetAlgorithm(mazeAlgorithmName);
         mazeAlgorithm.Initialize(height, width, seed);
         mazeAlgorithm.Generate();

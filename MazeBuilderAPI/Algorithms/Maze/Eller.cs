@@ -16,7 +16,6 @@ public class Eller : MazeBuilderBaseAlgorithm
             if (!bIsInitialized) return;
         }
 
-        var randomStream = Seed == -1 ? new Random() : new Random(Seed);
         var sets = new Dictionary<int, int>();
         var nextSet = 1;
 
@@ -29,7 +28,7 @@ public class Eller : MazeBuilderBaseAlgorithm
                     sets[x] = nextSet++;
                 }
 
-                if (x < Rows - 1 && (randomStream.Next(2) == 0 || y == Columns - 1))
+                if (x < Rows - 1 && (RandomStream.Next(2) == 0 || y == Columns - 1))
                 {
                     if (!sets.ContainsKey(x + 1))
                     {
@@ -55,7 +54,7 @@ public class Eller : MazeBuilderBaseAlgorithm
                 var nextRowSets = new Dictionary<int, int>();
                 for (int x = 0; x < Rows; x++)
                 {
-                    if (randomStream.Next(2) == 0 || !nextRowSets.ContainsValue(sets[x]))
+                    if (RandomStream.Next(2) == 0 || !nextRowSets.ContainsValue(sets[x]))
                     {
                         HandleWallBetween(x, y, x, y + 1, true);
                         nextRowSets[x] = sets[x];

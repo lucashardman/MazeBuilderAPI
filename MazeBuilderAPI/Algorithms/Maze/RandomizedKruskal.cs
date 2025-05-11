@@ -16,7 +16,6 @@ public class RandomizedKruskal : MazeBuilderBaseAlgorithm
             if (!bIsInitialized) return;
         }
 
-        var randomStream = Seed == -1 ? new Random() : new Random(Seed);
         var walls = new List<(int x1, int y1, int x2, int y2)>();
         var sets = new Dictionary<(int, int), int>();
         var nextSet = 1;
@@ -31,7 +30,7 @@ public class RandomizedKruskal : MazeBuilderBaseAlgorithm
             }
         }
 
-        walls = walls.OrderBy(_ => randomStream.Next()).ToList();
+        walls = walls.OrderBy(_ => RandomStream.Next()).ToList();
 
         foreach (var (x1, y1, x2, y2) in walls)
         {

@@ -15,23 +15,22 @@ public class RecursiveDivision : MazeBuilderBaseAlgorithm
             if (!bIsInitialized) return;
         }
 
-        var randomStream = Seed == -1 ? new Random() : new Random(Seed);
-        Divide(0, 0, Rows, Columns, randomStream);
+        Divide(0, 0, Rows, Columns);
     }
 
-    private void Divide(int minX, int minY, int maxX, int maxY, Random randomStream)
+    private void Divide(int minX, int minY, int maxX, int maxY)
     {
         // Stop if the area is too small
         if (maxX - minX < 2 || maxY - minY < 2) return;
 
         // Choose if it should divide horizontally or vertically
-        var isHorizontal = ChooseOrientation(maxX - minX, maxY - minY, randomStream);
+        var isHorizontal = ChooseOrientation(maxX - minX, maxY - minY);
 
         if (isHorizontal)
         {
             // Horizontal division
-            var y = randomStream.Next(minY + 1, maxY);
-            var passageX = randomStream.Next(minX, maxX);
+            var y = RandomStream.Next(minY + 1, maxY);
+            var passageX = RandomStream.Next(minX, maxX);
 
             // Draw passage
             for (var x = minX; x < maxX; x++)
@@ -43,14 +42,14 @@ public class RecursiveDivision : MazeBuilderBaseAlgorithm
             }
 
             // Use recursion to divide the new areas
-            Divide(minX, minY, maxX, y, randomStream);       // Upper area
-            Divide(minX, y, maxX, maxY, randomStream);       // Lower area
+            Divide(minX, minY, maxX, y);       // Upper area
+            Divide(minX, y, maxX, maxY);       // Lower area
         }
         else
         {
             // Vertical division
-            var x = randomStream.Next(minX + 1, maxX);
-            var passageY = randomStream.Next(minY, maxY);
+            var x = RandomStream.Next(minX + 1, maxX);
+            var passageY = RandomStream.Next(minY, maxY);
 
             // Draw passage
             for (var y = minY; y < maxY; y++)
@@ -62,14 +61,14 @@ public class RecursiveDivision : MazeBuilderBaseAlgorithm
             }
 
             // Use recursion to divide the new areas
-            Divide(minX, minY, x, maxY, randomStream);       // Left area
-            Divide(x, minY, maxX, maxY, randomStream);       // Right area
+            Divide(minX, minY, x, maxY);       // Left area
+            Divide(x, minY, maxX, maxY);       // Right area
         }
     }
-    private bool ChooseOrientation(int width, int height, Random randomStream)
+    private bool ChooseOrientation(int width, int height)
     {
         if (width < height) return true; // Horizontal
         if (height < width) return false; // Vertical
-        return randomStream.Next(2) == 0; // Random
+        return RandomStream.Next(2) == 0; // Random
     }
 }

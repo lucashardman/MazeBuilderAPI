@@ -20,9 +20,10 @@ public abstract class MazeBuilderBaseAlgorithm : IMazeStrategy
         new(1, 0)
     ];
     
-    protected int Rows { get; set; }
-    protected int Columns { get; set; }
-    protected int Seed { get; set; }
+    protected int Rows { get; private set; }
+    protected int Columns { get; private set; }
+    private int Seed { get; set; }
+    protected Random RandomStream { get; private set; } = new();
 
     // Get vertex index using (x, y) coordinates
     protected int GetVertexIndex(int x, int y) => y * Rows + x;
@@ -32,6 +33,12 @@ public abstract class MazeBuilderBaseAlgorithm : IMazeStrategy
 
     public void Initialize(int height, int width, int seed = -1)
     {
+        if (seed == -1)
+        {
+            var randomStream = new Random();
+            seed = randomStream.Next(1, int.MaxValue);
+        }
+        RandomStream = new Random(seed);
         Columns = height;
         Rows = width;
         Seed = seed;
@@ -106,7 +113,7 @@ public abstract class MazeBuilderBaseAlgorithm : IMazeStrategy
 
 
     /*
-     * Convert the Maze class to the response class of the API. If necessary, implement it.
+     * Convert the Maze class to the response class of the API.
      */
     public MazeResponse? ConvertMazeToResponseType()
     {

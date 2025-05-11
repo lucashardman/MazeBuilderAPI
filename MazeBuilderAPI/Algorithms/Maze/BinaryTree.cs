@@ -14,9 +14,6 @@ public class BinaryTree : MazeBuilderBaseAlgorithm
             if (!bIsInitialized) return;
         }
 
-        // Initializing the random stream
-        var randomStream = Seed == -1 ? new Random() : new Random(Seed);
-
         for (int y = 0; y < Columns; y++)
         {
             for (int x = 0; x < Rows; x++)
@@ -27,7 +24,7 @@ public class BinaryTree : MazeBuilderBaseAlgorithm
                 // If it can go Up and Left, choose a random path between them
                 if (canGoLeft && canGoUp)
                 {
-                    if (randomStream.Next(2) == 0) // 0 = Up, 1 = Left
+                    if (RandomStream.Next(2) == 0) // 0 = Up, 1 = Left
                     {
                         HandleWallBetween(x, y, x, y - 1, true); // Remove Up wall
                     }

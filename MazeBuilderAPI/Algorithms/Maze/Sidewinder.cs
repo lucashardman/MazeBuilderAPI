@@ -16,8 +16,6 @@ public class Sidewinder : MazeBuilderBaseAlgorithm
             if (!bIsInitialized) return;
         }
 
-        var randomStream = Seed == -1 ? new Random() : new Random(Seed);
-
         for (int y = 0; y < Columns; y++)
         {
             var run = new List<int>();
@@ -28,11 +26,11 @@ public class Sidewinder : MazeBuilderBaseAlgorithm
 
                 bool atEasternBoundary = (x == Rows - 1);
                 bool atNorthernBoundary = (y == 0);
-                bool shouldCloseOut = atEasternBoundary || (!atNorthernBoundary && randomStream.Next(2) == 0);
+                bool shouldCloseOut = atEasternBoundary || (!atNorthernBoundary && RandomStream.Next(2) == 0);
 
                 if (shouldCloseOut)
                 {
-                    int member = run[randomStream.Next(run.Count)];
+                    int member = run[RandomStream.Next(run.Count)];
                     if (!atNorthernBoundary)
                     {
                         HandleWallBetween(member, y, member, y - 1, true);

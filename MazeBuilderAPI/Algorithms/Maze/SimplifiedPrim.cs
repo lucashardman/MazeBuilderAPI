@@ -16,18 +16,15 @@ public class SimplifiedPrim : MazeBuilderBaseAlgorithm
             if (!bIsInitialized) return;
         }
 
-        // Initializing the random stream
-        var randomStream = Seed == -1 ? new Random() : new Random(Seed);
-
-        var startX = randomStream.Next(Rows);
-        var startY = randomStream.Next(Columns);
+        var startX = RandomStream.Next(Rows);
+        var startY = RandomStream.Next(Columns);
 
         // The active cell list contains the cells that will be used to search for unvisited neighbors
         var active = new List<IntPoint> { new IntPoint(startX, startY) };
 
         while (active.Any())
         {
-            var currentIndex = randomStream.Next(active.Count);
+            var currentIndex = RandomStream.Next(active.Count);
             var current = active[currentIndex];
 
             var availableNeighbors = GetAvailableNeighbors(current);
@@ -35,7 +32,7 @@ public class SimplifiedPrim : MazeBuilderBaseAlgorithm
             if (availableNeighbors.Any())
             {
                 // Choose a random neighbor
-                var neighbor = availableNeighbors[randomStream.Next(availableNeighbors.Count)];
+                var neighbor = availableNeighbors[RandomStream.Next(availableNeighbors.Count)];
 
                 // Remove the wall between the current cell and the neighbor
                 HandleWallBetween(current.X, current.Y, neighbor.X, neighbor.Y, true);

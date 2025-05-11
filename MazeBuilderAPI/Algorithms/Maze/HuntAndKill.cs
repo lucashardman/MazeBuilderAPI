@@ -18,12 +18,9 @@ public class HuntAndKill : MazeBuilderBaseAlgorithm
         // Track visited vertices, initializing with all unvisited
         var visited = Enumerable.Repeat(false, Rows * Columns).ToList();
 
-        // Initializing the random stream
-        var randomStream = Seed == -1 ? new Random() : new Random(Seed);
-
         // Visiting the first vertex
-        var currentX = randomStream.Next(0, Rows-1);
-        var currentY = randomStream.Next(0, Columns-1);
+        var currentX = RandomStream.Next(0, Rows-1);
+        var currentY = RandomStream.Next(0, Columns-1);
         visited[GetVertexIndex(currentX, currentY)] = true;
 
         bool bHuntPhase = false;
@@ -34,7 +31,7 @@ public class HuntAndKill : MazeBuilderBaseAlgorithm
             var neighbors = new List<IntPoint>();
 
             // Looking for non visited neighbors
-            foreach (var direction in Directions.OrderBy(d => randomStream.Next()))
+            foreach (var direction in Directions.OrderBy(d => RandomStream.Next()))
             {
                 var newX = currentX + direction.X;
                 var newY = currentY + direction.Y;
@@ -49,7 +46,7 @@ public class HuntAndKill : MazeBuilderBaseAlgorithm
             if (neighbors.Count > 0)
             {
                 // Choose random neighbor
-                var chosenNeighbor = neighbors[randomStream.Next(0, neighbors.Count-1)];
+                var chosenNeighbor = neighbors[RandomStream.Next(0, neighbors.Count-1)];
 
                 // Add a vertex between current vertex and the current neighbor
                 HandleWallBetween(currentX, currentY, chosenNeighbor.X, chosenNeighbor.Y, true);

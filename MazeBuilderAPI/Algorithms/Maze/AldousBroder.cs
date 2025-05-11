@@ -13,16 +13,17 @@ public class AldousBroder : MazeBuilderBaseAlgorithm
             var bIsInitialized = InitializeBoard(true);
             if (!bIsInitialized) return;
         }
-        var randomStream = Seed == -1 ? new Random() : new Random(Seed);
+
+        // var randomStream = Seed == -1 ? new Random() : new Random(Seed);
         var visited = new HashSet<(int, int)>();
-        int x = randomStream.Next(Rows);
-        int y = randomStream.Next(Columns);
+        int x = RandomStream.Next(Rows);
+        int y = RandomStream.Next(Columns);
         visited.Add((x, y));
         
         while (visited.Count < Columns * Rows)
         {
             var directions = new List<(int dx, int dy)>(Directions.Select(d => (d.X, d.Y)));
-            var (dx, dy) = directions[randomStream.Next(directions.Count)];
+            var (dx, dy) = directions[RandomStream.Next(directions.Count)];
             int nx = x + dx;
             int ny = y + dy;
 
