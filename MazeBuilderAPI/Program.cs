@@ -32,6 +32,14 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<IMazeAlgorithmFactory, MazeAlgorithmFactory>();
 builder.Services.AddScoped<IMazeStrategy, AldousBroder>();
+builder.Services.AddScoped<IMazeStrategy, BinaryTree>();
+builder.Services.AddScoped<IMazeStrategy, DepthFirstSearch>();
+builder.Services.AddScoped<IMazeStrategy, Eller>();
+builder.Services.AddScoped<IMazeStrategy, HuntAndKill>();
+builder.Services.AddScoped<IMazeStrategy, RandomizedKruskal>();
+builder.Services.AddScoped<IMazeStrategy, RecursiveDivision>();
+builder.Services.AddScoped<IMazeStrategy, Sidewinder>();
+builder.Services.AddScoped<IMazeStrategy, SimplifiedPrim>();
 
 var app = builder.Build();
 app.UsePathBase("/MazeBuilder");
