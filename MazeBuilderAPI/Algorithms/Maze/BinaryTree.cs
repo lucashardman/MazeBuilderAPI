@@ -1,32 +1,17 @@
-﻿using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Models.Internal;
+﻿namespace MazeBuilderAPI.Algorithms.Maze;
 
-namespace MazeBuilderAPI.Algorithms.Maze;
+using Models.Enums;
 
-public class BinaryTreeAlgorithm : MazeBuilderBaseAlgorithm
+public class BinaryTree : MazeBuilderBaseAlgorithm
 {
-    public BinaryTreeAlgorithm(int columns, int rows, int seed, MazeAlgorithm algorithm)
-    {
-        Columns = columns;
-        Rows = rows;
-        Seed = seed;
-        Algorithm = algorithm;
-    }
+    public override MazeAlgorithm MazeAlgorithmName  => MazeAlgorithm.BinaryTree;
+    protected override bool ShouldInitializeWalls => true;
 
-    public void Run(int seed = -1)
+    public override void Generate()
     {
-        if (Maze is null)
-        {
-            var bIsInitialized = Initialize(true);
-            if (!bIsInitialized) return;
-        }
-        
-        // Initializing the random stream
-        var randomStream = seed == -1 ? new Random() : new Random(seed);
-        
         for (int y = 0; y < Columns; y++)
         {
-            for (int x = 0; x < Rows; x++)  
+            for (int x = 0; x < Rows; x++)
             {
                 bool canGoLeft = x > 0; // Can go left, if it's not in the first column
                 bool canGoUp = y > 0; //Can go up, if it's not in the first row
@@ -34,7 +19,7 @@ public class BinaryTreeAlgorithm : MazeBuilderBaseAlgorithm
                 // If it can go Up and Left, choose a random path between them
                 if (canGoLeft && canGoUp)
                 {
-                    if (randomStream.Next(2) == 0) // 0 = Up, 1 = Left
+                    if (RandomStream.Next(2) == 0) // 0 = Up, 1 = Left
                     {
                         HandleWallBetween(x, y, x, y - 1, true); // Remove Up wall
                     }

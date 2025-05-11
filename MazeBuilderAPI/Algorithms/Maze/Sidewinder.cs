@@ -1,28 +1,14 @@
-﻿using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Models.Internal;
+﻿namespace MazeBuilderAPI.Algorithms.Maze;
 
-namespace MazeBuilderAPI.Algorithms.Maze;
+using Models.Enums;
 
 public class Sidewinder : MazeBuilderBaseAlgorithm
 {
-    public Sidewinder(int columns, int rows, int seed, MazeAlgorithm algorithm)
-    {
-        Columns = columns;
-        Rows = rows;
-        Seed = seed;
-        Algorithm = algorithm;
-    }
+    public override MazeAlgorithm MazeAlgorithmName  => MazeAlgorithm.Sidewinder;
+    protected override bool ShouldInitializeWalls => true;
 
-    public void Run(int seed = -1)
+    public override void Generate()
     {
-        if (Maze is null)
-        {
-            var bIsInitialized = Initialize(true);
-            if (!bIsInitialized) return;
-        }
-        
-        var randomStream = seed == -1 ? new Random() : new Random(seed);
-
         for (int y = 0; y < Columns; y++)
         {
             var run = new List<int>();
@@ -33,11 +19,11 @@ public class Sidewinder : MazeBuilderBaseAlgorithm
 
                 bool atEasternBoundary = (x == Rows - 1);
                 bool atNorthernBoundary = (y == 0);
-                bool shouldCloseOut = atEasternBoundary || (!atNorthernBoundary && randomStream.Next(2) == 0);
+                bool shouldCloseOut = atEasternBoundary || (!atNorthernBoundary && RandomStream.Next(2) == 0);
 
                 if (shouldCloseOut)
                 {
-                    int member = run[randomStream.Next(run.Count)];
+                    int member = run[RandomStream.Next(run.Count)];
                     if (!atNorthernBoundary)
                     {
                         HandleWallBetween(member, y, member, y - 1, true);

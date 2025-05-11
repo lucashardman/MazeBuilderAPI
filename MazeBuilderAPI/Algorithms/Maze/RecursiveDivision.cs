@@ -1,31 +1,14 @@
-﻿using MazeBuilderAPI.Models.Enums;
+﻿namespace MazeBuilderAPI.Algorithms.Maze;
 
-namespace MazeBuilderAPI.Algorithms.Maze;
+using Models.Enums;
 
 public class RecursiveDivision : MazeBuilderBaseAlgorithm
 {
-    private Random _randomStream;
-    
-    public RecursiveDivision(int columns, int rows, int seed, MazeAlgorithm algorithm)
-    {
-        Columns = columns;
-        Rows = rows;
-        Seed = seed;
-        Algorithm = algorithm;
-        _randomStream = new Random();
-    }
+    public override MazeAlgorithm MazeAlgorithmName  => MazeAlgorithm.RecursiveDivision;
+    protected override bool ShouldInitializeWalls => false;
 
-    public void Run(int seed = -1)
+    public override void Generate()
     {
-        if (Maze is null)
-        {
-            var bIsInitialized = Initialize(false);
-            if (!bIsInitialized) return;
-        }
-
-        // Initializing the random stream
-        if (seed != -1) _randomStream = new Random(seed);
-        
         Divide(0, 0, Rows, Columns);
     }
 
@@ -40,8 +23,8 @@ public class RecursiveDivision : MazeBuilderBaseAlgorithm
         if (isHorizontal)
         {
             // Horizontal division
-            var y = _randomStream.Next(minY + 1, maxY);
-            var passageX = _randomStream.Next(minX, maxX);
+            var y = RandomStream.Next(minY + 1, maxY);
+            var passageX = RandomStream.Next(minX, maxX);
 
             // Draw passage
             for (var x = minX; x < maxX; x++)
@@ -59,8 +42,8 @@ public class RecursiveDivision : MazeBuilderBaseAlgorithm
         else
         {
             // Vertical division
-            var x = _randomStream.Next(minX + 1, maxX);
-            var passageY = _randomStream.Next(minY, maxY);
+            var x = RandomStream.Next(minX + 1, maxX);
+            var passageY = RandomStream.Next(minY, maxY);
 
             // Draw passage
             for (var y = minY; y < maxY; y++)
@@ -80,6 +63,6 @@ public class RecursiveDivision : MazeBuilderBaseAlgorithm
     {
         if (width < height) return true; // Horizontal
         if (height < width) return false; // Vertical
-        return _randomStream.Next(2) == 0; // Random
+        return RandomStream.Next(2) == 0; // Random
     }
 }

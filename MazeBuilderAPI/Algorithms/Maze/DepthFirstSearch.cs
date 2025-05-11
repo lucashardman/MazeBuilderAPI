@@ -1,37 +1,23 @@
-﻿using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Models.Internal;
+﻿namespace MazeBuilderAPI.Algorithms.Maze;
 
-namespace MazeBuilderAPI.Algorithms.Maze;
+using Models.Enums;
+using Models.Internal;
 
 public class DepthFirstSearch : MazeBuilderBaseAlgorithm
 {
-    public DepthFirstSearch(int columns, int rows, int seed, MazeAlgorithm algorithm)
+    public override MazeAlgorithm MazeAlgorithmName  => MazeAlgorithm.DepthFirstSearch;
+    protected override bool ShouldInitializeWalls => true;
+
+    public override void Generate()
     {
-        Columns = columns;
-        Rows = rows;
-        Seed = seed;
-        Algorithm = algorithm;
-    }
-
-    public void Run(int seed = -1)
-    {
-        if (Maze is null)
-        {
-            var bIsInitialized = Initialize(true);
-            if (!bIsInitialized) return;
-        }
-
-        // Initializing the random stream
-        var randomStream = seed == -1 ? new Random() : new Random(seed);
-
         var visited = new bool[Rows, Columns];
 
         // Initialize DFS stack
         Stack<IntPoint> stack = new Stack<IntPoint>();
 
         // Choose a random first vertex
-        var startX = randomStream.Next(Rows);
-        var startY = randomStream.Next(Columns);
+        var startX = RandomStream.Next(Rows);
+        var startY = RandomStream.Next(Columns);
         stack.Push(new IntPoint(startX, startY));
         visited[startX, startY] = true;
 
@@ -48,7 +34,7 @@ public class DepthFirstSearch : MazeBuilderBaseAlgorithm
             if (unvisitedNeighbors.Count > 0)
             {
                 // Choose random neighbor
-                var next = unvisitedNeighbors[randomStream.Next(unvisitedNeighbors.Count)];
+                var next = unvisitedNeighbors[RandomStream.Next(unvisitedNeighbors.Count)];
 
                 // Remove wall between current vertex and neighbor
                 HandleWallBetween(x, y, next.X, next.Y, true);

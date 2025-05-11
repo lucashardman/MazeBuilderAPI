@@ -1,27 +1,14 @@
-﻿using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Models.Internal;
+﻿namespace MazeBuilderAPI.Algorithms.Maze;
 
-namespace MazeBuilderAPI.Algorithms.Maze;
+using Models.Enums;
 
-public class EllerAlgorithm : MazeBuilderBaseAlgorithm
+public class Eller : MazeBuilderBaseAlgorithm
 {
-    public EllerAlgorithm(int columns, int rows, int seed, MazeAlgorithm algorithm)
-    {
-        Columns = columns;
-        Rows = rows;
-        Seed = seed;
-        Algorithm = algorithm;
-    }
+    public override MazeAlgorithm MazeAlgorithmName  => MazeAlgorithm.Eller;
+    protected override bool ShouldInitializeWalls => true;
 
-    public void Run(int seed = -1)
+    public override void Generate()
     {
-        if (Maze is null)
-        {
-            var bIsInitialized = Initialize(true);
-            if (!bIsInitialized) return;
-        }
-        
-        var randomStream = seed == -1 ? new Random() : new Random(seed);
         var sets = new Dictionary<int, int>();
         var nextSet = 1;
 
@@ -34,7 +21,7 @@ public class EllerAlgorithm : MazeBuilderBaseAlgorithm
                     sets[x] = nextSet++;
                 }
 
-                if (x < Rows - 1 && (randomStream.Next(2) == 0 || y == Columns - 1))
+                if (x < Rows - 1 && (RandomStream.Next(2) == 0 || y == Columns - 1))
                 {
                     if (!sets.ContainsKey(x + 1))
                     {
@@ -60,7 +47,7 @@ public class EllerAlgorithm : MazeBuilderBaseAlgorithm
                 var nextRowSets = new Dictionary<int, int>();
                 for (int x = 0; x < Rows; x++)
                 {
-                    if (randomStream.Next(2) == 0 || !nextRowSets.ContainsValue(sets[x]))
+                    if (RandomStream.Next(2) == 0 || !nextRowSets.ContainsValue(sets[x]))
                     {
                         HandleWallBetween(x, y, x, y + 1, true);
                         nextRowSets[x] = sets[x];

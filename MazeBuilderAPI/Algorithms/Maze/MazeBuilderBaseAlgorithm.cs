@@ -1,15 +1,19 @@
-﻿using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Models.Internal;
-using MazeBuilderAPI.Models.Responses;
+﻿namespace MazeBuilderAPI.Algorithms.Maze;
 
-namespace MazeBuilderAPI.Algorithms.Maze;
+using Interfaces;
+using Models.Enums;
+using Models.Internal;
+using Models.Responses;
 
-public class MazeBuilderBaseAlgorithm
+public abstract class MazeBuilderBaseAlgorithm : IMazeStrategy
 {
+    public abstract MazeAlgorithm MazeAlgorithmName { get; }
+    protected abstract bool ShouldInitializeWalls { get; }
+    public abstract void Generate();
     protected List<List<MazeVertex>>? Maze { get; set; }
     
     // Use this array to move between vertex (up, down, left and right)
-    protected List<IntPoint> Directions =
+    protected readonly List<IntPoint> Directions =
     [
         new(0, -1),
         new(0, 1),
@@ -17,16 +21,32 @@ public class MazeBuilderBaseAlgorithm
         new(1, 0)
     ];
     
-    protected int Rows { get; init; }
-    protected int Columns { get; init; }
-    protected int Seed { get; init; }
-    protected MazeAlgorithm Algorithm { get; init; }
+    protected int Rows { get; private set; }
+    protected int Columns { get; private set; }
+    private int Seed { get; set; }
+    protected Random RandomStream { get; private set; } = new();
 
     // Get vertex index using (x, y) coordinates
     protected int GetVertexIndex(int x, int y) => y * Rows + x;
         
     // Check if vertex exists
     protected bool IsValidVertex(int x, int y) => x >= 0 && x < Rows && y >= 0 && y < Columns;
+
+    public bool Initialize(int height, int width, int seed = -1)
+    {
+        if (seed == -1)
+        {
+            var randomStream = new Random();
+            seed = randomStream.Next(1, int.MaxValue);
+        }
+
+        RandomStream = new Random(seed);
+        Columns = height;
+        Rows = width;
+        Seed = seed;
+
+        return InitializeBoard();
+    }
     
     // Connect two vertex setting the edge between them to true
     protected void HandleWallBetween(int x1, int y1, int x2, int y2, bool bRemoveWall)
@@ -63,7 +83,7 @@ public class MazeBuilderBaseAlgorithm
         }
     }
     
-    protected bool Initialize(bool bAddWalls)
+    private bool InitializeBoard()
     {
         if (Rows == 0 || Columns == 0) return false;
         
@@ -74,12 +94,12 @@ public class MazeBuilderBaseAlgorithm
             Maze.Add([]);
             for (var j = 0; j < Rows; j++)
             {
-                Maze[i].Add(bAddWalls
+                Maze[i].Add(ShouldInitializeWalls
                     ? new MazeVertex(false, false, false, false)
                     : new MazeVertex(true, true, true, true));
             }
         }
-        if (!bAddWalls) // Add the maze limits if it's initialized with no wall
+        if (!ShouldInitializeWalls) // Add the maze limits if it's initialized with no wall
         {
             for (var i = 0; i < Rows; i++)
             {
@@ -94,12 +114,11 @@ public class MazeBuilderBaseAlgorithm
         }
         return true;
     }
-    
-    
+
     /*
-     * Convert the Maze class to the response class of the API. If necessary, implement it.
+     * Convert the Maze class to the response class of the API.
      */
-    public MazeResponse? ConvertMazeToResponseType()
+    public MazeResponse ConvertMazeToResponseType()
     {
         Maze ??= [];
         var response = new MazeResponse
@@ -108,7 +127,7 @@ public class MazeBuilderBaseAlgorithm
             Seed = Seed,
             Rows = Rows,
             Columns = Columns,
-            Algorithm = Algorithm
+            Algorithm = MazeAlgorithmName
         };
     
         return response;

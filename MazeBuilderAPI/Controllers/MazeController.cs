@@ -1,31 +1,27 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace MazeBuilderAPI.Controllers;
+
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Algorithms.Maze;
-using MazeBuilderAPI.Models.Internal;
-using MazeBuilderAPI.Models.Responses;
-using MazeBuilderAPI.Services;
+using Models.Enums;
+using Models.Responses;
+using Services;
 
-namespace MazeBuilderAPI.Controllers;
-
-
-public class MazeController : MazeBuilderBaseController
+public class MazeController(MazeService mazeService) : MazeBuilderBaseController
 {
-    private readonly MazeService _mazeService;
-    
-    public MazeController(MazeService mazeService)
-    {
-        _mazeService = mazeService;
-    }
-    
     [HttpGet]
     [ProducesResponseType(typeof(MazeResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public IActionResult Get([Required]int height, [Required] int width, [Required] MazeAlgorithm mazeAlgorithm, int seed = -1)
+    public IActionResult Get(
+        [Required]int height,
+        [Required] int width,
+        [Required] MazeAlgorithm mazeAlgorithm,
+        int seed = -1
+    )
     {
         try
         {
-            var mazeResponse = _mazeService.Generate(height, width, mazeAlgorithm, seed);
+            var mazeResponse = mazeService.Generate(height, width, mazeAlgorithm, seed);
+            if (mazeResponse == null) return BadRequest("Não foi possível gerar o labirinto com os parâmetros fornecidos.");
             return Ok(mazeResponse);
         }
         catch (ArgumentException ex)

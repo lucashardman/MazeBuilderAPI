@@ -1,25 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
-using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Models.Responses;
-using MazeBuilderAPI.Services;
+﻿namespace MazeBuilderAPI.Controllers;
+
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using Models.Enums;
+using Models.Responses;
+using Services;
 
-namespace MazeBuilderAPI.Controllers;
-
-public class SolveController :  MazeBuilderBaseController
+public class SolveController(MazeService mazeService) : MazeBuilderBaseController
 {
-    private readonly MazeService _mazeService;
-    private readonly SolveService _solveService;
-    public SolveController(MazeService mazeService)
-    {
-        _mazeService = mazeService;
-        _solveService = new SolveService();
-    }
-    
+    private readonly SolveService _solveService = new();
+
     [HttpGet]
     [ProducesResponseType(typeof(SolveResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public IActionResult Solve(
+    public IActionResult Get(
         [Required] int seed,
         [Required] int height, 
         [Required] int width, 
@@ -29,7 +23,7 @@ public class SolveController :  MazeBuilderBaseController
     {
         try
         {
-            var mazeResponse = _mazeService.Generate(height, width, mazeAlgorithm, seed);
+            var mazeResponse = mazeService.Generate(height, width, mazeAlgorithm, seed);
             if (mazeResponse == null)
             {
                 return Problem();
