@@ -1,26 +1,19 @@
 ﻿using MazeBuilderAPI.Models.Enums;
-using MazeBuilderAPI.Models.Internal;
 
 namespace MazeBuilderAPI.Algorithms.Maze;
 
 public class AldousBroder : MazeBuilderBaseAlgorithm
 {
-    public AldousBroder(int columns, int rows, int seed, MazeAlgorithm algorithm)
-    {
-        Columns = columns;
-        Rows = rows;
-        Seed = seed;
-        Algorithm = algorithm;
-    }
+    public override MazeAlgorithm MazeAlgorithmName  => MazeAlgorithm.AldousBroder;
 
-    public void Run(int seed = -1)
+    public override void Generate()
     {
         if (Maze is null)
         {
-            var bIsInitialized = Initialize(true);
+            var bIsInitialized = InitializeBoard(true);
             if (!bIsInitialized) return;
         }
-        var randomStream = seed == -1 ? new Random() : new Random(seed);
+        var randomStream = Seed == -1 ? new Random() : new Random(Seed);
         var visited = new HashSet<(int, int)>();
         int x = randomStream.Next(Rows);
         int y = randomStream.Next(Columns);
@@ -43,7 +36,6 @@ public class AldousBroder : MazeBuilderBaseAlgorithm
                 x = nx;
                 y = ny;
             }
-            Console.WriteLine($"({x}, {y})");
         }
     }
 }

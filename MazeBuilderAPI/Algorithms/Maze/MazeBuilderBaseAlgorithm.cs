@@ -1,15 +1,18 @@
-﻿using MazeBuilderAPI.Models.Enums;
+﻿using MazeBuilderAPI.Interfaces;
+using MazeBuilderAPI.Models.Enums;
 using MazeBuilderAPI.Models.Internal;
 using MazeBuilderAPI.Models.Responses;
 
 namespace MazeBuilderAPI.Algorithms.Maze;
 
-public class MazeBuilderBaseAlgorithm
+public abstract class MazeBuilderBaseAlgorithm : IMazeStrategy
 {
+    public abstract MazeAlgorithm MazeAlgorithmName { get; }
+    public abstract void Generate();
     protected List<List<MazeVertex>>? Maze { get; set; }
     
     // Use this array to move between vertex (up, down, left and right)
-    protected List<IntPoint> Directions =
+    protected readonly List<IntPoint> Directions =
     [
         new(0, -1),
         new(0, 1),
@@ -17,16 +20,22 @@ public class MazeBuilderBaseAlgorithm
         new(1, 0)
     ];
     
-    protected int Rows { get; init; }
-    protected int Columns { get; init; }
-    protected int Seed { get; init; }
-    protected MazeAlgorithm Algorithm { get; init; }
+    protected int Rows { get; set; }
+    protected int Columns { get; set; }
+    protected int Seed { get; set; }
 
     // Get vertex index using (x, y) coordinates
     protected int GetVertexIndex(int x, int y) => y * Rows + x;
         
     // Check if vertex exists
     protected bool IsValidVertex(int x, int y) => x >= 0 && x < Rows && y >= 0 && y < Columns;
+
+    public void Initialize(int height, int width, int seed = -1)
+    {
+        Columns = height;
+        Rows = width;
+        Seed = seed;
+    }
     
     // Connect two vertex setting the edge between them to true
     protected void HandleWallBetween(int x1, int y1, int x2, int y2, bool bRemoveWall)
@@ -63,7 +72,7 @@ public class MazeBuilderBaseAlgorithm
         }
     }
     
-    protected bool Initialize(bool bAddWalls)
+    protected bool InitializeBoard(bool bAddWalls)
     {
         if (Rows == 0 || Columns == 0) return false;
         
@@ -94,8 +103,8 @@ public class MazeBuilderBaseAlgorithm
         }
         return true;
     }
-    
-    
+
+
     /*
      * Convert the Maze class to the response class of the API. If necessary, implement it.
      */
@@ -108,7 +117,7 @@ public class MazeBuilderBaseAlgorithm
             Seed = Seed,
             Rows = Rows,
             Columns = Columns,
-            Algorithm = Algorithm
+            Algorithm = MazeAlgorithmName
         };
     
         return response;

@@ -1,4 +1,6 @@
 using System.Text.Json.Serialization;
+using MazeBuilderAPI.Algorithms.Maze;
+using MazeBuilderAPI.Interfaces;
 using MazeBuilderAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +27,11 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();   
     });
 });
+
+
+
+builder.Services.AddScoped<IMazeAlgorithmFactory, MazeAlgorithmFactory>();
+builder.Services.AddScoped<IMazeStrategy, AldousBroder>();
 
 var app = builder.Build();
 app.UsePathBase("/MazeBuilder");
