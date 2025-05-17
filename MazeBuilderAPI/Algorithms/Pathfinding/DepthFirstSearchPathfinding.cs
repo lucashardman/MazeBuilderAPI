@@ -1,11 +1,15 @@
-﻿namespace MazeBuilderAPI.Algorithms.Pathfinding;
+﻿using MazeBuilderAPI.Interfaces;
+using MazeBuilderAPI.Models.Enums;
+
+namespace MazeBuilderAPI.Algorithms.Pathfinding;
 
 using Models.Internal;
 using Models.Responses;
 
-public class DepthFirstSearch
+public class DepthFirstSearchPathfinding : ISolveStrategy
 {
-    public SolveResponse Run(List<List<MazeVertex>> maze)
+    public PathfindingAlgorithm PathfindingAlgorithmName  => PathfindingAlgorithm.DepthFirstSearch;
+    public SolveResponse Solve(List<List<MazeVertex>> maze)
     {
         int height = maze.Count;
         int width = maze[0].Count;
@@ -100,15 +104,15 @@ public class DepthFirstSearch
         
         while (currentVertex != null)
         {
-            path.Add(currentVertex);
+            path.Add(currentVertex.Value);
             
-            if (currentVertex.X == start.X && currentVertex.Y == start.Y)
+            if (currentVertex.Value.X == start.X && currentVertex.Value.Y == start.Y)
                 break;
                 
-            if (!cameFrom.ContainsKey(currentVertex))
+            if (!cameFrom.ContainsKey(currentVertex.Value))
                 break; // Proteção contra loops infinitos
                 
-            currentVertex = cameFrom[currentVertex];
+            currentVertex = cameFrom[currentVertex.Value];
         }
         
         // Inverter o caminho para que seja do início para o fim
