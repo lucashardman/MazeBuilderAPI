@@ -6,10 +6,8 @@ using Models.Enums;
 using Models.Responses;
 using Services;
 
-public class SolveController(MazeService mazeService) : MazeBuilderBaseController
+public class SolveController(MazeService mazeService, SolveService solveService) : MazeBuilderBaseController
 {
-    private readonly SolveService _solveService = new();
-
     [HttpGet]
     [ProducesResponseType(typeof(SolveResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
@@ -28,7 +26,7 @@ public class SolveController(MazeService mazeService) : MazeBuilderBaseControlle
             {
                 return Problem();
             }
-            var solveResponse = _solveService.Solve(mazeResponse.Maze, pathfindingAlgorithm);
+            var solveResponse = solveService.Solve(mazeResponse.Maze, pathfindingAlgorithm);
             return Ok(solveResponse);
         }
         catch (ArgumentException ex)

@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using MazeBuilderAPI.Algorithms.Maze;
+using MazeBuilderAPI.Algorithms.Pathfinding;
 using MazeBuilderAPI.Interfaces;
 using MazeBuilderAPI.Services;
 
@@ -40,6 +41,9 @@ builder.Services.AddScoped<IMazeStrategy, RandomizedKruskal>();
 builder.Services.AddScoped<IMazeStrategy, RecursiveDivision>();
 builder.Services.AddScoped<IMazeStrategy, Sidewinder>();
 builder.Services.AddScoped<IMazeStrategy, SimplifiedPrim>();
+
+builder.Services.AddScoped<IPathfindingAlgorithmFactory, PathfindingAlgorithmFactory>();
+builder.Services.AddScoped<ISolveStrategy, DepthFirstSearchPathfinding>();
 
 var app = builder.Build();
 app.UsePathBase("/MazeBuilder");

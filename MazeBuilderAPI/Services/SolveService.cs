@@ -1,27 +1,15 @@
-﻿namespace MazeBuilderAPI.Services;
+﻿using MazeBuilderAPI.Interfaces;namespace MazeBuilderAPI.Services;
 
 using Algorithms.Pathfinding;
 using Models.Enums;
 using Models.Internal;
 using Models.Responses;
 
-public class SolveService
+public class SolveService(IPathfindingAlgorithmFactory factory)
 {
-    public SolveResponse? Solve(List<List<MazeVertex>> maze, PathfindingAlgorithm pathfindingAlgorithm)
+    public SolveResponse Solve(List<List<MazeVertex>> maze, PathfindingAlgorithm pathfindingAlgorithmName)
     {
-        switch (pathfindingAlgorithm)
-        {
-            case PathfindingAlgorithm.DepthFirstSearch:
-                var depthFirstSearch = new DepthFirstSearch();
-                return depthFirstSearch.Run(maze);
-            case PathfindingAlgorithm.BreadthFirstSearch:
-                return null;
-            case PathfindingAlgorithm.Dijkstra:
-                return null;
-            case PathfindingAlgorithm.AStar:
-                return null;
-            default:
-                throw new ArgumentException("Algoritmo de pathfinding não suportado", nameof(pathfindingAlgorithm));
-        }
+       var pathfindingAlgorithm = factory.GetAlgorithm(pathfindingAlgorithmName);
+       return pathfindingAlgorithm.Solve(maze);
     }
 }
