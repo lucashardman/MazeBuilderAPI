@@ -1,4 +1,4 @@
-using MazeBuilderAPI.Interfaces;
+﻿using MazeBuilderAPI.Interfaces;
 using MazeBuilderAPI.Models.Enums;
 
 namespace MazeBuilderAPI.Algorithms.Pathfinding;
@@ -6,11 +6,10 @@ namespace MazeBuilderAPI.Algorithms.Pathfinding;
 using Models.Internal;
 using Models.Responses;
 using System.Collections.Generic;
-using System;
 
-public class AStar : ISolveStrategy
+public class Dijkstra  : ISolveStrategy
 {
-    public PathfindingAlgorithm PathfindingAlgorithmName => PathfindingAlgorithm.AStar;
+    public PathfindingAlgorithm PathfindingAlgorithmName => PathfindingAlgorithm.Dijkstra;
 
     public SolveResponse Solve(List<List<MazeVertex>> maze)
     {
@@ -27,44 +26,42 @@ public class AStar : ISolveStrategy
         // Dicionário para armazenar o caminho
         Dictionary<IntPoint, IntPoint?> cameFrom = new Dictionary<IntPoint, IntPoint?>();
 
-        // Dicionário para armazenar os custos g (custo do início até o nó atual)
-        Dictionary<IntPoint, int> gScore = new Dictionary<IntPoint, int>();
+        // Dicionário para armazenar as distâncias
+        Dictionary<IntPoint, int> distances = new Dictionary<IntPoint, int>();
 
-        // Dicionário para armazenar os custos f (g + h, onde h é a heurística)
-        Dictionary<IntPoint, int> fScore = new Dictionary<IntPoint, int>();
-
-        // Inicializar todos os custos com "infinito"
+        // Inicializar distâncias com "infinito"
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                IntPoint point = new IntPoint(x, y);
-                gScore[point] = int.MaxValue;
-                fScore[point] = int.MaxValue;
+                distances[new IntPoint(x, y)] = int.MaxValue;
             }
         }
 
-        // Custo do início para o início é 0
-        gScore[start] = 0;
+        // Fila de prioridade para o Dijkstra (usando uma lista ordenada por distância)
+        List<(IntPoint point, int distance)> priorityQueue = new List<(IntPoint, int)>();
 
-        // fScore do início é apenas a heurística
-        fScore[start] = CalculateHeuristic(start, end);
-
-        // Lista aberta para o A* (nós a serem explorados)
-        List<IntPoint> openSet = new List<IntPoint> { start };
-
-        // Inicializar caminho
+        // Inicializar
+        distances[start] = 0;
+        priorityQueue.Add((start, 0));
         cameFrom[start] = null;
 
         bool foundPath = false;
 
-        // Executar A*
-        while (openSet.Count > 0)
+        // Executar Dijkstra
+        while (priorityQueue.Count > 0)
         {
-            // Encontrar o nó com menor fScore na lista aberta
-            openSet.Sort((a, b) => fScore[a].CompareTo(fScore[b]));
-            IntPoint current = openSet[0];
-            openSet.RemoveAt(0);
+            // Encontrar o nó com menor distância
+            priorityQueue.Sort((a, b) => a.distance.CompareTo(b.distance));
+            var (current, currentDistance) = priorityQueue[0];
+            priorityQueue.RemoveAt(0);
+
+            // Se já visitamos este nó, pular
+            if (visited[current.Y, current.X])
+                continue;
+
+            // Marcar como visitado
+            visited[current.Y, current.X] = true;
 
             // Se chegamos ao destino, terminamos
             if (current.X == end.X && current.Y == end.Y)
@@ -72,9 +69,6 @@ public class AStar : ISolveStrategy
                 foundPath = true;
                 break;
             }
-
-            // Marcar como visitado
-            visited[current.Y, current.X] = true;
 
             // Direções possíveis: cima, direita, baixo, esquerda
             var directions = new List<(int dx, int dy)>
@@ -114,23 +108,16 @@ public class AStar : ISolveStrategy
                 if (!canMove)
                     continue;
 
-                // Calcular novo gScore (custo do início até este vizinho via nó atual)
-                IntPoint neighbor = new IntPoint(nextX, nextY);
-                int tentativeGScore = gScore[current] + 1; // Custo de movimento é 1
+                // Calcular nova distância (assumindo peso 1 para cada movimento)
+                IntPoint next = new IntPoint(nextX, nextY);
+                int newDistance = distances[current] + 1;
 
-                // Se encontramos um caminho melhor para este vizinho
-                if (tentativeGScore < gScore[neighbor])
+                // Se encontramos um caminho mais curto para este nó
+                if (newDistance < distances[next])
                 {
-                    // Atualizar caminho e custos
-                    cameFrom[neighbor] = current;
-                    gScore[neighbor] = tentativeGScore;
-                    fScore[neighbor] = tentativeGScore + CalculateHeuristic(neighbor, end);
-
-                    // Adicionar à lista aberta se ainda não estiver lá
-                    if (!openSet.Contains(neighbor))
-                    {
-                        openSet.Add(neighbor);
-                    }
+                    distances[next] = newDistance;
+                    cameFrom[next] = current;
+                    priorityQueue.Add((next, newDistance));
                 }
             }
         }
@@ -166,11 +153,5 @@ public class AStar : ISolveStrategy
             Path = path,
             PathLength = path.Count > 0 ? path.Count - 1 : 0
         };
-    }
-
-    // Função heurística: distância de Manhattan (soma das diferenças absolutas em x e y)
-    private int CalculateHeuristic(IntPoint current, IntPoint goal)
-    {
-        return Math.Abs(current.X - goal.X) + Math.Abs(current.Y - goal.Y);
     }
 }

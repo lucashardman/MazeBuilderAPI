@@ -44,6 +44,9 @@ builder.Services.AddScoped<IMazeStrategy, SimplifiedPrim>();
 
 builder.Services.AddScoped<IPathfindingAlgorithmFactory, PathfindingAlgorithmFactory>();
 builder.Services.AddScoped<ISolveStrategy, DepthFirstSearchPathfinding>();
+builder.Services.AddScoped<ISolveStrategy, BreadthFirstSearch>();
+builder.Services.AddScoped<ISolveStrategy, Dijkstra>();
+builder.Services.AddScoped<ISolveStrategy, AStar>();
 
 var app = builder.Build();
 app.UsePathBase("/MazeBuilder");

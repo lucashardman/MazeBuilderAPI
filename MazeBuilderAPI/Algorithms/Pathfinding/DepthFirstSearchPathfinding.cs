@@ -115,7 +115,7 @@ public class DepthFirstSearchPathfinding : ISolveStrategy
             currentVertex = cameFrom[currentVertex.Value];
         }
         
-        // Inverter o caminho para que seja do início para o fim
+        // Inverter o caminho para ser do início até o fim
         path.Reverse();
         
         return new SolveResponse
